@@ -1,47 +1,57 @@
-window.onload = function() {
-	var sens = -1;
-	
-	// Transition avec fonction de rappel
-	function transition() {
-		alert('ok');
-		sens *= -1;
-		pendule.transitionTo({
-			rotation: sens * Math.PI / 4, 
-			duration: 2,
-			easing: "ease-in-out",
-			callback: function() {transition();}
-		});		
-	}
-	
-	// Scène
-	var scène = new Kinetic.Stage({
-	  container: "kinetic",
-	  width: 500,
-	  height: 300
-	});
-	
-	var calque = new Kinetic.Layer();
-	
-	// Construction du pendule avec un groupe
-	var pendule = new Kinetic.Group( {
-		x: 250,
-		y: 50
-	});
-	var boule = new Kinetic.Ellipse({
-		x: 0,
-		y: 180,
-		radius: 20,
-		fill: "blue"
-	});
-	var fil = new Kinetic.Line({
-		points: [0, 0, 0, 180],
-		stroke: "black"
-	});
-	
-	pendule.add(fil);
-	pendule.add(boule);
-	calque.add(pendule);
-	scène.add(calque);
-	
-	transition();
-};
+$(document).ready(function(){
+
+  $('canvas').drawRect({
+    strokeStyle: '#c33',
+    strokeWidth: 4,
+    layer:true,
+    name:"myBox",
+    x: 150, y: 100,
+    width: 200,
+    height: 100,
+    cornerRadius: 10
+  }).drawImage({
+  source: './images/default.png',
+  x: 100, y: 100,
+  width: 200, height: 125
+});
+
+
+  var rot = 360;
+  var vitesse = 400;
+
+  $("#plus").click(function(){
+    // Animate layer properties
+    $('canvas').animateLayer('myBox', {
+      x: 150,
+      y: 150,
+      width: 100,
+      rotate:rot,
+      height: 50,
+
+    }, 1000, 
+    function(layer) {
+
+      for(var i = 0; i < 2;i++){
+        $(this).animateLayer(layer, {
+          x: 250,
+          y: 100,
+          rotate:rot*2,
+        }, vitesse, 'linear');
+
+
+        $(this).animateLayer(layer, {
+          x: 100,
+          y: 100,
+          rotate:rot*3,
+        }, vitesse, 'linear');
+      }
+
+
+
+
+    }
+
+    );
+  });
+
+});
